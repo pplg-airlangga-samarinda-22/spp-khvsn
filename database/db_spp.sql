@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 18, 2025 at 02:19 AM
+-- Generation Time: Feb 18, 2025 at 07:12 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -58,11 +58,18 @@ CREATE TABLE `pembayaran` (
 
 CREATE TABLE `petugas` (
   `id_petugas` int(11) NOT NULL,
-  `username` varchar(25) DEFAULT NULL,
-  `password` varchar(32) DEFAULT NULL,
-  `nama_petugas` varchar(35) DEFAULT NULL,
+  `username` varchar(35) NOT NULL,
+  `password` varchar(32) NOT NULL,
+  `nama_petugas` varchar(60) NOT NULL,
   `level` enum('admin','petugas') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `petugas`
+--
+
+INSERT INTO `petugas` (`id_petugas`, `username`, `password`, `nama_petugas`, `level`) VALUES
+(1, 'admin', '202cb962ac59075b964b07152d234b70', 'rull', 'admin');
 
 -- --------------------------------------------------------
 
@@ -111,7 +118,8 @@ ALTER TABLE `pembayaran`
   ADD PRIMARY KEY (`id_pembayaran`),
   ADD KEY `nisn` (`nisn`),
   ADD KEY `id_petugas` (`id_petugas`),
-  ADD KEY `id_spp` (`id_spp`);
+  ADD KEY `id_spp` (`id_spp`),
+  ADD KEY `id_petugas_2` (`id_petugas`);
 
 --
 -- Indexes for table `petugas`
@@ -150,7 +158,7 @@ ALTER TABLE `kelas`
 -- AUTO_INCREMENT for table `petugas`
 --
 ALTER TABLE `petugas`
-  MODIFY `id_petugas` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_petugas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `spp`
@@ -167,13 +175,8 @@ ALTER TABLE `spp`
 --
 ALTER TABLE `pembayaran`
   ADD CONSTRAINT `pembayaran_ibfk_1` FOREIGN KEY (`nisn`) REFERENCES `siswa` (`nisn`),
-  ADD CONSTRAINT `pembayaran_ibfk_2` FOREIGN KEY (`id_spp`) REFERENCES `siswa` (`id_spp`);
-
---
--- Constraints for table `petugas`
---
-ALTER TABLE `petugas`
-  ADD CONSTRAINT `petugas_ibfk_1` FOREIGN KEY (`id_petugas`) REFERENCES `pembayaran` (`id_petugas`);
+  ADD CONSTRAINT `pembayaran_ibfk_2` FOREIGN KEY (`id_spp`) REFERENCES `siswa` (`id_spp`),
+  ADD CONSTRAINT `pembayaran_ibfk_3` FOREIGN KEY (`id_petugas`) REFERENCES `petugas` (`id_petugas`);
 
 --
 -- Constraints for table `siswa`
